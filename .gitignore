@@ -1,3 +1,8 @@
+__pycache__
+dist
+build
+bin
 venv
 .idea
 *.pfx
+*.spec

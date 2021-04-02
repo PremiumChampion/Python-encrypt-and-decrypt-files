@@ -4,24 +4,18 @@
 Creates a Self Signed Certificate for use in server to server authentication
 .DESCRIPTION
 .EXAMPLE
-.\Create-SelfSignedCertificate.ps1 -CommonName "MyCert" -StartDate 2015-11-21 -EndDate 2017-11-21
-This will create a new self signed certificate with the common name "CN=MyCert". During creation you will be asked to provide a password to protect the private key.
+.\Create-SelfSignedCertificate.ps1 -CommonName "CertificateName"
+This will create a new self signed certificate with the common name "CN=CertificateName". During creation you will be asked to provide a password to protect the private key.
 .EXAMPLE
-.\Create-SelfSignedCertificate.ps1 -CommonName "MyCert" -StartDate 2015-11-21 -EndDate 2017-11-21 -Password (ConvertTo-SecureString -String "MyPassword" -AsPlainText -Force)
+.\Create-SelfSignedCertificate.ps1 -CommonName "MyCert" -Password (ConvertTo-SecureString -String "MyPassword" -AsPlainText -Force)
 This will create a new self signed certificate with the common name "CN=MyCert". The password as specified in the Password parameter will be used to protect the private key
 .EXAMPLE
-.\Create-SelfSignedCertificate.ps1 -CommonName "MyCert" -StartDate 2015-11-21 -EndDate 2017-11-21 -Force
+.\Create-SelfSignedCertificate.ps1 -CommonName "MyCert" -Force
 This will create a new self signed certificate with the common name "CN=MyCert". During creation you will be asked to provide a password to protect the private key. If there is already a certificate with the common name you specified, it will be removed first.
 #>
 Param(
    [Parameter(Mandatory=$true)]
    [string]$CommonName,
-
-   [Parameter(Mandatory=$true)]
-   [DateTime]$StartDate,
-
-   [Parameter(Mandatory=$true)]
-   [DateTime]$EndDate,
 
    [Parameter(Mandatory=$false, HelpMessage="Will overwrite existing certificates")]
    [Switch]$Force,
@@ -29,6 +23,9 @@ Param(
    [Parameter(Mandatory=$false)]
    [SecureString]$Password
 )
+
+$StartDate = Get-Date
+$EndDate = Get-Date -Year ($StartDate.Year + 1) -Month $StartDate.Month -Day $StartDate.Day
 
 # DO NOT MODIFY BELOW
 

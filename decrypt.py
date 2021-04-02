@@ -1,9 +1,18 @@
 import os
+import sys
 from cryptography.hazmat.primitives.serialization import pkcs12
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
 from pathlib import Path
 from cryptography.fernet import Fernet
+
+
+def get_commandline_arguments(argument: str):
+    for i, arg in enumerate(sys.argv):
+        if arg == argument:
+            if len(sys.argv) > i + 1:
+                return sys.argv[i + 1]
+    return None
 
 
 def rreplace(s, old, new, count):
@@ -22,9 +31,19 @@ def dump_pfx_certificate(pfx_path: str, pfx_password: str):
         raise Exception
 
 
-certificate_filename = input("Please enter the path to the .pfx certificate file: ")
-password = input("Certificate password: ")
-path_to_decrypt = input("Please specify directory/file to decrypt (Leave blank for the current directory): ")
+certificate_filename = get_commandline_arguments("--cert")
+password = get_commandline_arguments("--cert-passwd")
+path_to_decrypt = get_commandline_arguments("--path")
+
+
+if certificate_filename is None:
+    certificate_filename = input("Please enter the path of the .pfx certificate file: ")
+
+if password is None:
+    password = input("Certificate password: ")
+
+if path_to_decrypt is None:
+    path_to_decrypt = input("Please specify directory/file to decrypt (Leave blank for the current directory): ")
 
 if path_to_decrypt == "":
     path_to_decrypt = "."
