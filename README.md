@@ -55,6 +55,6 @@ The encrypted key is stored in a file with the extension `.crypt.key` and stored
 ### v1.1:
 
 - Added commandline parameters
-    - [`--cert`] {Path to certificate} optional (Specify in the program)
-    - [`--cert-passwd`] {Password of the certificate} optional (Specify in the program)
-    - [`--path`] {File or Directory to encrypt} optional (Specify in the program)
+    - [`--cert` {Path to certificate}] optional (Specify in the program)
+    - [`--cert-passwd` {Password of the certificate}] optional (Specify in the program)
+    - [`--path` {File or Directory to encrypt}} optional (Specify in the program)
