@@ -15,7 +15,7 @@ def get_commandline_arguments(argument: str):
     return None
 
 
-def rreplace(s, old, new, count):
+def replace_last_occurrences(s, old, new, count=1):
     return (s[::-1].replace(old[::-1], new[::-1], count))[::-1]
 
 
@@ -52,7 +52,6 @@ try:
 
     certificate = dump_pfx_certificate(certificate_filename, password)
 
-
     def decrypt_file(path):
         try:
             print("Decrypting file: " + str(path))
@@ -69,11 +68,12 @@ try:
             with open(path, "rb") as encrypted_file:
                 decrypted = Fernet(decryption_key).decrypt(encrypted_file.read())
 
-            os.remove(path)
+            with open(path, "wb") as encrypted_file:
+                encrypted_file.write(decrypted)
+
+            os.replace(path, replace_last_occurrences(str(path), ".crypt", ""))
             os.remove(str(path) + ".key")
 
-            with open(rreplace(str(path), ".crypt", "", 1), "wb") as decrypted_file:
-                decrypted_file.write(decrypted)
         except PermissionError:
             pass
 

